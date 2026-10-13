@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FriendGram</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f5f3ff;--card:#fff;--ink:#1b1740;--mute:#6e6a8f;--line:#e4e0f7;--a:#6c4dff;--b:#ff5ea8;--sun:#ffc53d;--me:#6c4dff;--them:#ece9fb;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14112b;--card:#1e1a3d;--ink:#f1efff;--mute:#a39fc8;--line:#2f2a5a;--them:#2a2556}}
+:root[data-theme="dark"]{--bg:#14112b;--card:#1e1a3d;--ink:#f1efff;--mute:#a39fc8;--line:#2f2a5a;--them:#2a2556}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Bricolage Grotesque',system-ui,-apple-system,'Segoe UI',sans-serif;line-height:1.45}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--card);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:10px 16px;gap:12px}
+.logo{font-weight:800;font-size:26px;letter-spacing:-.04em;background:linear-gradient(90deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent}
+nav{display:flex;gap:4px}
+nav button{padding:8px 14px;border-radius:999px;font-weight:600;color:var(--mute)}
+nav button[aria-selected=true]{background:var(--a);color:#fff}
+main{max-width:640px;margin:0 auto;padding:16px}
+.av{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:800;flex:none}
+.av.sm{width:34px;height:34px;font-size:14px}
+.stories{display:flex;gap:14px;overflow-x:auto;padding-bottom:12px;margin-bottom:8px}
+.story{display:grid;justify-items:center;gap:4px;font-size:12px;color:var(--mute);min-width:62px}
+.story .ring{padding:3px;border-radius:50%;background:linear-gradient(135deg,var(--sun),var(--b),var(--a))}
+.story .av{border:3px solid var(--bg);width:54px;height:54px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;margin-bottom:16px;overflow:hidden}
+.ph{display:flex;align-items:center;gap:10px;padding:12px 14px;font-weight:600}
+.ph small{display:block;color:var(--mute);font-weight:400}
+.pic{aspect-ratio:1/1;display:grid;place-items:center;padding:28px;text-align:center;font-size:clamp(22px,5vw,32px);font-weight:800;color:#fff;letter-spacing:-.02em;background-size:cover;background-position:center}
+.acts{display:flex;gap:6px;padding:8px 10px}
+.acts button{padding:8px 10px;border-radius:10px;font-weight:600}
+.acts button:hover{background:var(--bg)}
+.acts .liked{color:var(--b)}
+.cap{padding:0 14px 12px}
+.cm{padding:0 14px 12px;color:var(--mute);font-size:14px}
+.composer{padding:14px;display:grid;gap:10px}
+textarea,input[type=text]{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.btn{background:var(--a);color:#fff;border-radius:999px;padding:9px 18px;font-weight:600}
+.btn.alt{background:var(--bg);color:var(--ink);border:1px solid var(--line)}
+.chat{display:grid;grid-template-columns:1fr;gap:16px}
+.list .it{display:flex;gap:12px;align-items:center;padding:12px 14px;width:100%;text-align:left;border-bottom:1px solid var(--line)}
+.list .it:hover{background:var(--bg)}
+.list .it small{display:block;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:46ch}
+.thread{display:flex;flex-direction:column;height:min(70vh,560px)}
+.th{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line);font-weight:600}
+.th .sp{flex:1}
+.ic{padding:8px 12px;border-radius:999px;background:var(--bg);font-weight:600;font-size:14px}
+.msgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:8px}
+.m{max-width:78%;padding:8px 13px;border-radius:18px;background:var(--them);overflow-wrap:anywhere}
+.m.me{align-self:flex-end;background:var(--me);color:#fff}
+.m.sys{align-self:center;background:none;color:var(--mute);font-size:13px}
+.send{display:flex;gap:8px;padding:10px;border-top:1px solid var(--line)}
+.prof{text-align:center;padding:24px 16px}
+.prof .av{width:84px;height:84px;font-size:34px;margin:0 auto 10px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:16px}
+.grid .pic{aspect-ratio:1;padding:8px;font-size:12px;border-radius:6px}
+.ov{position:fixed;inset:0;z-index:20;background:rgba(10,8,30,.6);display:grid;place-items:center;padding:16px}
+.modal{background:var(--card);border-radius:18px;padding:16px;width:min(420px,100%);max-height:80vh;overflow:auto}
+.call{position:fixed;inset:0;z-index:30;background:#120f2e;color:#fff;display:grid;grid-template-rows:1fr auto;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.call .stage{display:grid;place-items:center;text-align:center;position:relative;padding:16px}
+.call .av{width:120px;height:120px;font-size:48px;margin:0 auto 12px}
+.call video{position:absolute;right:14px;top:14px;width:110px;height:150px;object-fit:cover;border-radius:14px;background:#000;border:2px solid #fff3}
+.call .ctl{display:flex;justify-content:center;gap:14px;padding:20px}
+.call .ctl button{width:58px;height:58px;border-radius:50%;background:#fff2;font-size:22px}
+.call .ctl .end{background:#e5334b}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:999px;z-index:40}
+.hide{display:none!important}
+@media(min-width:760px){.chat{grid-template-columns:260px 1fr}.chat .list{height:fit-content}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<header>
+  <span class="logo">FriendGram</span>
+  <nav role="tablist" id="nav"></nav>
+</header>
+<main id="main"></main>
+<div id="layer"></div>
+<script>
+const FR=[{id:1,n:'Maya',h:320},{id:2,n:'Arjun',h:210},{id:3,n:'Priya',h:30},{id:4,n:'Kiran',h:150},{id:5,n:'Sana',h:270}];
+const ME={n:'You',h:255};
+const G=[['#6c4dff','#ff5ea8'],['#00b3a4','#6c4dff'],['#ff8a3d','#ff5ea8'],['#2563eb','#22d3ee'],['#ffc53d','#ff5ea8']];
+let S={tab:'feed',chat:1,liked:{},posts:[
+ {id:1,by:1,t:'Sunday mornings are for filter coffee and no plans.',g:0,likes:12,cm:['Same here!','Save me a cup']},
+ {id:2,by:2,t:'Finished my first 10K today!',g:1,likes:27,cm:['Legend']},
+ {id:3,by:3,t:'New recipe: mango lassi with a pinch of cardamom.',g:2,likes:18,cm:[]}],
+ msgs:{1:[{me:0,t:'Hey! Did you see my coffee post?'}],2:[],3:[{me:0,t:'Call me when you are free'}],4:[],5:[]}};
+try{const d=JSON.parse(localStorage.getItem('fg')||'null');if(d&&d.posts){S.posts=d.posts;S.msgs=d.msgs;S.liked=d.liked||{}}}catch(e){}
+const save=()=>{try{localStorage.setItem('fg',JSON.stringify({posts:S.posts,msgs:S.msgs,liked:S.liked}))}catch(e){}};
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fr=id=>id===0?ME:FR.find(f=>f.id===id);
+const av=(p,c='')=>`<div class="av ${c}" style="background:linear-gradient(135deg,hsl(${p.h} 80% 55%),hsl(${(p.h+50)%360} 80% 60%))">${p.n[0]}</div>`;
+const pic=p=>`<div class="pic" style="background-image:${p.img?`url(${p.img})`:`linear-gradient(135deg,${G[p.g%5][0]},${G[p.g%5][1]})`}">${p.img?'':esc(p.t)}</div>`;
+function toast(t){const e=document.createElement('div');e.className='toast';e.textContent=t;document.body.appendChild(e);setTimeout(()=>e.remove(),2200)}
+
+function nav(){const t=[['feed','Feed'],['chats','Chats'],['me','Profile']];
+ $('#nav').innerHTML=t.map(([k,l])=>`<button role="tab" aria-selected="${S.tab===k}" onclick="S.tab='${k}';render()">${l}</button>`).join('')}
+
+function feed(){
+ return `<div class="stories">${[ME,...FR].map(f=>`<button class="story" onclick="${f===ME?'':`openChat(${f.id})`}"><span class="ring">${av(f)}</span>${f.n}</button>`).join('')}</div>
+ <div class="card composer"><textarea id="np" rows="2" placeholder="Share something with your friends"></textarea>
+ <div class="row"><label class="btn alt">Add photo<input type="file" id="npf" accept="image/*" hidden onchange="pick(this)"></label><span id="pn" style="color:var(--mute);font-size:13px"></span><span style="flex:1"></span><button class="btn" onclick="addPost()">Post</button></div></div>`+
+ S.posts.map(p=>{const u=fr(p.by),L=S.liked[p.id];return `<article class="card"><div class="ph">${av(u,'sm')}<div>${u.n}<small>${p.by===0?'Just now':'Today'}</small></div></div>${pic(p)}
+ <div class="acts"><button class="${L?'liked':''}" onclick="like(${p.id})">${L?'♥':'♡'} ${p.likes+(L?1:0)}</button><button onclick="cmt(${p.id})">Comment ${p.cm.length}</button><button onclick="share(${p.id})">Share</button></div>
+ ${p.img?`<div class="cap"><b>${u.n}</b> ${esc(p.t)}</div>`:''}
+ ${p.cm.map(c=>`<div class="cm">${esc(c)}</div>`).join('')}</article>`}).join('')}
+
+let img=null;
+function pick(i){const f=i.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const c=document.createElement('canvas'),s=Math.min(1,640/Math.max(im.width,im.height));c.width=im.width*s;c.height=im.height*s;c.getContext('2d').drawImage(im,0,0,c.width,c.height);img=c.toDataURL('image/jpeg',.7);$('#pn').textContent='Photo added'};im.src=r.result};r.readAsDataURL(f)}
+function addPost(){const t=$('#np').value.trim();if(!t&&!img)return toast('Write something or add a photo');
+ S.posts.unshift({id:Date.now(),by:0,t:t||'New photo',g:Math.floor(Math.random()*5),likes:0,cm:[],img});img=null;save();render();toast('Posted')}
+function like(id){S.liked[id]=!S.liked[id];save();render()}
+function cmt(id){const t=prompt('Write a comment');if(t&&t.trim()){S.posts.find(p=>p.id===id).cm.push(t.trim());save();render()}}
+function share(id){const p=S.posts.find(x=>x.id===id);
+ $('#layer').innerHTML=`<div class="ov" onclick="if(event.target===this)closeL()"><div class="modal"><h3 style="margin:0 0 8px">Send to a friend</h3><div class="list">${FR.map(f=>`<button class="it" onclick="sendPost(${f.id},${id})">${av(f,'sm')}${f.n}</button>`).join('')}</div></div></div>`}
+function sendPost(fid,pid){const p=S.posts.find(x=>x.id===pid);S.msgs[fid].push({me:1,t:`Shared a post by ${fr(p.by).n}: "${p.t}"`});save();closeL();toast('Sent to '+fr(fid).n)}
+function closeL(){$('#layer').innerHTML=''}
+
+function chats(){const f=fr(S.chat),m=S.msgs[S.chat];
+ return `<div class="chat"><div class="card list">${FR.map(x=>{const l=S.msgs[x.id].slice(-1)[0];return `<button class="it" onclick="openChat(${x.id})" style="${x.id===S.chat?'background:var(--bg)':''}">${av(x)}<span><b>${x.n}</b><small>${l?esc(l.t):'Say hi'}</small></span></button>`}).join('')}</div>
+ <div class="card thread"><div class="th">${av(f,'sm')}${f.n}<span class="sp"></span><button class="ic" onclick="startCall('audio')">Audio call</button><button class="ic" onclick="startCall('video')">Video call</button></div>
+ <div class="msgs" id="msgs">${m.length?m.map(x=>`<div class="m ${x.me?'me':''}">${esc(x.t)}</div>`).join(''):'<div class="m sys">No messages yet. Say hi to '+f.n+'.</div>'}</div>
+ <div class="send"><input type="text" id="mi" placeholder="Message ${f.n}" onkeydown="if(event.key==='Enter')sendMsg()"><button class="btn" onclick="sendMsg()">Send</button></div></div></div>`}
+function openChat(id){S.chat=id;S.tab='chats';render()}
+const RE=['Haha nice!','Tell me more','Sounds good to me','Let us call later','Love it','On my way!'];
+function sendMsg(){const i=$('#mi'),t=i.value.trim();if(!t)return;const id=S.chat;S.msgs[id].push({me:1,t});save();render();
+ setTimeout(()=>{S.msgs[id].push({me:0,t:RE[Math.floor(Math.random()*RE.length)]});save();if(S.tab==='chats'&&S.chat===id)render()},1200)}
+
+function me(){const mine=S.posts.filter(p=>p.by===0);
+ return `<div class="card prof">${av(ME)}<h2 style="margin:0">You</h2><p style="color:var(--mute);margin:4px 0">${mine.length} posts · ${FR.length} friends</p>
+ <div class="grid">${mine.length?mine.map(pic).join(''):''}</div>${mine.length?'':'<p style="color:var(--mute)">Your posts will show up here. Share your first one from the Feed.</p>'}</div>`}
+
+let st=null,tm=null;
+async function startCall(type){const f=fr(S.chat);
+ $('#layer').innerHTML=`<div class="call"><div class="stage"><video id="lv" class="${type==='video'?'':'hide'}" autoplay muted playsinline></video><div>${av(f)}<h2 style="margin:0">${f.n}</h2><p id="cs" style="opacity:.8">Ringing…</p></div></div>
+ <div class="ctl"><button onclick="tg('audio')" aria-label="Mute microphone" id="bm">🎤</button>${type==='video'?'<button onclick="tg(\'video\')" aria-label="Turn camera off">📷</button>':''}<button class="end" onclick="endCall()" aria-label="End call">✕</button></div></div>`;
+ try{st=await navigator.mediaDevices.getUserMedia({audio:true,video:type==='video'});if(type==='video')$('#lv').srcObject=st}
+ catch(e){const c=$('#cs');if(c)c.textContent='Allow microphone or camera access in your browser to start the call'; return}
+ let s=0;setTimeout(()=>{const c=$('#cs');if(!c)return;tm=setInterval(()=>{s++;const e=$('#cs');if(e)e.textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')},1000)},1800)}
+function tg(k){if(!st)return;st.getTracks().filter(t=>t.kind===k).forEach(t=>t.enabled=!t.enabled)}
+function endCall(){if(st)st.getTracks().forEach(t=>t.stop());st=null;clearInterval(tm);closeL()}
+
+function render(){nav();const a=document.activeElement&&document.activeElement.id,v=a&&document.activeElement.value;
+ $('#main').innerHTML=S.tab==='feed'?feed():S.tab==='chats'?chats():me();
+ const m=$('#msgs');if(m)m.scrollTop=m.scrollHeight;if(a==='mi'&&$('#mi'))$('#mi').focus()}
+render();
+</script>
+</body>
+</html>
